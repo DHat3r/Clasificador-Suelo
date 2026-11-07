@@ -15,7 +15,7 @@ MAX_BYTES = 5 * 1024 * 1024  # una imagen de 64x64 pesa unos KB; 5 MB es holgado
 ALLOWED_TYPES = {"image/jpeg", "image/png"}
 WEB_INDEX = Path(__file__).resolve().parents[2] / "web" / "index.html"
 
-app = FastAPI(title="Clasificador de uso de suelo (EuroSAT)")
+app = FastAPI(title="Clasificador de cobertura del suelo (EuroSAT)")
 _state = {}
 
 

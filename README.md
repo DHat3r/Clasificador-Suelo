@@ -1,8 +1,8 @@
-# Clasificador de uso de suelo con imágenes satelitales
+# Clasificador de cobertura del suelo con imágenes satelitales
 
 [![CI](https://github.com/DHat3r/landuse-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/DHat3r/landuse-classifier/actions/workflows/ci.yml)
 
-> Clasifica parches satelitales de 64 × 64 píxeles en cinco tipos de uso de suelo. Sirve para practicar un flujo completo de ML: datos, entrenamiento, evaluación y despliegue en una API con Docker.
+> Clasifica parches satelitales de 64 × 64 píxeles en cinco tipos de cobertura del suelo. Sirve para practicar un flujo completo de ML: datos, entrenamiento, evaluación y despliegue en una API con Docker.
 
 <!-- ![Web de demostración](docs/demo.png) -->
 
