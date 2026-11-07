@@ -36,7 +36,7 @@ cd landuse-classifier
 docker compose up api
 ```
 
-Luego abre `http://localhost:8000`.
+Luego abre `http://localhost:8000`. Si ese puerto está ocupado, usa otro: `API_PORT=8080 docker compose up api`.
 
 ### Entrenar el modelo
 
