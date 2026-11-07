@@ -206,6 +206,7 @@ El modelo final falla 12 de 2250 imágenes del test set.
 - Solo usa 5 de las 10 clases de EuroSAT.
 - Usa imágenes RGB de 64 × 64. No aprovecha las 13 bandas espectrales.
 - La confianza es la salida del softmax y no está calibrada. Ante una imagen fuera de la distribución (no satelital, u otra región o sensor), el modelo reparte el 100 % entre sus 5 clases y puede dar confianza alta a una clase equivocada.
+- Depende de la escala. Fue entrenado con 10 m por píxel (cada imagen cubre unos 640 × 640 m). Con imágenes de mayor resolución, como fotos aéreas o capturas con mucho zoom, la textura cambia: en una prueba, una zona de arbustos con un sendero salió como `Residential` con 94,5 % de confianza. En cambio, una captura de parcelas a escala similar a Sentinel-2 salió como `AnnualCrop` con 100 %.
 
 ## Qué mejoraría
 
