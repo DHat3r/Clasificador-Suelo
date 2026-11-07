@@ -1,0 +1,30 @@
+name: CI
+
+# Se ejecuta en cada push y en cada pull request dirigido a main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          # Cachea las descargas de pip entre ejecuciones para acelerar el job.
+          cache: pip
+
+      # Torch desde el índice CPU: evita descargar la versión con CUDA (muy pesada) en CI.
+      - name: Instalar torch (CPU)
+        run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Instalar dependencias de desarrollo
+        run: pip install -r requirements-dev.txt
+
+      - name: Ejecutar tests
+        run: python -m pytest -q

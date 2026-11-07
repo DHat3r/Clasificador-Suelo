@@ -1,0 +1,48 @@
+# Orquestación local del clasificador de uso de suelo.
+# Arranque de la API:      docker compose up api
+# Entrenamiento (opcional): DATA_DIR=/ruta/al/dataset docker compose --profile train run --rm train
+#
+# Nota de permisos: la imagen corre con el usuario no root 'app'. Las carpetas
+# montadas (./models y ./reports) deben ser escribibles por ese usuario, o el
+# entrenamiento fallará al guardar el modelo o los reportes.
+
+services:
+  api:
+    # Ambos servicios construyen la misma imagen desde el Dockerfile; el nombre
+    # fijo evita que Compose genere una imagen distinta por servicio.
+    build: .
+    image: landuse-classifier
+    ports:
+      # host:contenedor. La API escucha en el 8000 dentro del contenedor.
+      - "8000:8000"
+    volumes:
+      # Solo lectura: la API solo carga el modelo, nunca lo modifica.
+      - ./models:/app/models:ro
+    environment:
+      # Ruta del modelo dentro del contenedor (la que escribe el servicio train).
+      - MODEL_PATH=/app/models/best.pt
+    # Reinicia el contenedor si falla, salvo que lo hayamos parado a mano.
+    restart: unless-stopped
+    healthcheck:
+      # Python viene en la imagen y urllib evita instalar curl solo para esto.
+      # Comprueba que la API responde en /health; si no, el contenedor queda "unhealthy".
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health', timeout=5).status == 200 else 1)"]
+      interval: 30s
+
+  train:
+    build: .
+    image: landuse-classifier
+    # El profile 'train' hace que este servicio NO arranque con 'docker compose up';
+    # solo se ejecuta cuando se pide con --profile train.
+    profiles: ["train"]
+    command: ["python", "-m", "landuse.train", "--arch", "resnet18", "--epochs", "5", "--out", "/app/models/best.pt", "--reports-dir", "/app/reports"]
+    volumes:
+      # Dataset en la máquina host: se exige DATA_DIR para no entrenar con una ruta vacía por error.
+      # Solo lectura: el entrenamiento no debe modificar los datos originales.
+      - ${DATA_DIR:?Define DATA_DIR con la ruta del dataset}:/data:ro
+      # Salidas: el modelo entrenado y los reportes deben quedar en el host.
+      - ./models:/app/models
+      - ./reports:/app/reports
+    environment:
+      # train.py lee DATA_DIR como valor por defecto de --data-dir.
+      - DATA_DIR=/data
