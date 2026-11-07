@@ -314,7 +314,7 @@
         <canvas id="lienzo" width="64" height="64" aria-label="Imagen ampliada a la resolución del modelo"></canvas>
         <span class="invitacion">
           <strong>Arrastra una imagen aquí o haz clic para elegirla</strong>
-          <span>JPG o PNG, hasta 5 MB</span>
+          <span>También puedes pegarla con Ctrl+V. JPG o PNG, hasta 5 MB.</span>
         </span>
       </label>
       <figcaption id="leyenda-visor">Así la ve el modelo: 64 × 64 píxeles.</figcaption>
@@ -454,6 +454,15 @@
       tesela.classList.remove('arrastrando');
       const archivo = evento.dataTransfer.files[0];
       if (archivo) clasificar(archivo);
+    });
+
+    // Pegar desde el portapapeles (Ctrl+V) en cualquier parte de la página.
+    // Si lo pegado no es una imagen, no se intercepta: el pegado normal sigue funcionando.
+    document.addEventListener('paste', (evento) => {
+      const imagen = [...evento.clipboardData.files].find((f) => f.type.startsWith('image/'));
+      if (!imagen) return;
+      evento.preventDefault();
+      clasificar(imagen);
     });
   </script>
 </body>
