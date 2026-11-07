@@ -37,9 +37,11 @@ services:
     profiles: ["train"]
     command: ["python", "-m", "landuse.train", "--arch", "resnet18", "--epochs", "5", "--lr", "1e-4", "--out", "/app/models/best.pt", "--reports-dir", "/app/reports"]
     volumes:
-      # Dataset en la máquina host: se exige DATA_DIR para no entrenar con una ruta vacía por error.
+      # Dataset en la máquina host. Por defecto ./data (vacía en el repo). No se usa ${DATA_DIR:?}
+      # porque Compose interpola todo el archivo y eso rompería también 'docker compose up api'.
+      # Si falta el dataset, data.py falla con un mensaje que dice qué carpeta de clase no encontró.
       # Solo lectura: el entrenamiento no debe modificar los datos originales.
-      - ${DATA_DIR:?Define DATA_DIR con la ruta del dataset}:/data:ro
+      - ${DATA_DIR:-./data}:/data:ro
       # Salidas: el modelo entrenado y los reportes deben quedar en el host.
       - ./models:/app/models
       - ./reports:/app/reports
