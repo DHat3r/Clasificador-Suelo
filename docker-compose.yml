@@ -35,7 +35,7 @@ services:
     # El profile 'train' hace que este servicio NO arranque con 'docker compose up';
     # solo se ejecuta cuando se pide con --profile train.
     profiles: ["train"]
-    command: ["python", "-m", "landuse.train", "--arch", "resnet18", "--epochs", "5", "--out", "/app/models/best.pt", "--reports-dir", "/app/reports"]
+    command: ["python", "-m", "landuse.train", "--arch", "resnet18", "--epochs", "5", "--lr", "1e-4", "--out", "/app/models/best.pt", "--reports-dir", "/app/reports"]
     volumes:
       # Dataset en la máquina host: se exige DATA_DIR para no entrenar con una ruta vacía por error.
       # Solo lectura: el entrenamiento no debe modificar los datos originales.
