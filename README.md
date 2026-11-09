@@ -1,6 +1,6 @@
 # Clasificador de cobertura del suelo con imágenes satelitales
 
-[![CI](https://github.com/DHat3r/landuse-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/DHat3r/landuse-classifier/actions/workflows/ci.yml)
+[![CI](https://github.com/DHat3r/Clasificador-Suelo/actions/workflows/ci.yml/badge.svg)](https://github.com/DHat3r/Clasificador-Suelo/actions/workflows/ci.yml)
 
 > Clasifica parches satelitales de 64 × 64 píxeles en cinco tipos de cobertura del suelo. Sirve para practicar un flujo completo de ML: datos, entrenamiento, evaluación y despliegue en una API con Docker.
 
@@ -31,8 +31,8 @@ La web muestra la imagen tal como la ve el modelo (64 × 64) y una leyenda con l
 La API necesita el modelo entrenado en `models/best.pt`. Los archivos `.pt` no se suben al repositorio por su tamaño. Si el modelo no existe, la web carga, pero `POST /predict` responde 503. Para generarlo, ver la sección "Entrenar el modelo".
 
 ```bash
-git clone https://github.com/DHat3r/landuse-classifier.git
-cd landuse-classifier
+git clone https://github.com/DHat3r/Clasificador-Suelo.git
+cd Clasificador-Suelo
 docker compose up api
 ```
 
